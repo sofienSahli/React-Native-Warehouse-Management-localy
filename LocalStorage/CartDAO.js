@@ -25,13 +25,22 @@ class CartDAO{
               }
         try {
           const jsonValue = JSON.stringify(object)
-            console.warn(jsonValue)
+            //console.warn(jsonValue)
           await AsyncStorage.setItem(CART, jsonValue)
         } catch (e) {
           console.log(e)
         }
       }
-
+      //Delete all values 
+      removeValue = async () => {
+        try {
+          await AsyncStorage.removeItem(CART)
+        } catch(e) {
+          // remove error
+        }
+      
+        console.log('Done.')
+      }
 
       
       // Returns all values from @Product

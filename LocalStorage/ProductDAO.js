@@ -14,7 +14,7 @@ export const PRODUCT = "@PRODUCT"
            // console.error(val);
                 if(element.product_barcode.toString() == val.product_barcode.toString()){
                     value.splice(index,1)
-                    console.warn(index)
+                    //console.warn(index)
                 }
             });
             //console.warn(value)
@@ -73,7 +73,7 @@ export const PRODUCT = "@PRODUCT"
               }
         try {
           const jsonValue = JSON.stringify(object)
-            console.warn(jsonValue)
+           // console.warn(jsonValue)
           await AsyncStorage.setItem(PRODUCT, jsonValue)
         } catch (e) {
           console.log(e)
@@ -84,7 +84,7 @@ export const PRODUCT = "@PRODUCT"
         
         try {
           const jsonValue = JSON.stringify(value)
-            console.warn(jsonValue)
+           // console.warn(jsonValue)
           await AsyncStorage.setItem(PRODUCT, jsonValue)
           return value
         } catch (e) {
