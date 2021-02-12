@@ -124,6 +124,7 @@ export default class NewProduct extends React.Component {
                                 <Text > Prix de vente : </Text>
                                 <TextInput  style={ styles.input_text} 
                                     placeholder='Entrer le prix de vente du produit'
+                                    keyboardType="numeric"
                                    onChangeText={ (text)=>{ this.setState({ product_price: text  }) }}
                                    onSubmitEditing = { (text) => { this.setState({ product_price: text.nativeEvent.text  })}}
                                 />
@@ -132,6 +133,7 @@ export default class NewProduct extends React.Component {
                             <View style={ styles.line}> 
                                 <Text > Quantité : </Text>
                                 <TextInput style={ styles.input_text} multiline={ false} 
+                                keyboardType="numeric"
                                     placeholder='Entrer la quantité disponible à la  vente'
                                 onChangeText={ (text)=>{ this.setState({ product_quantity: text }) }}
                                 onSubmitEditing = { (text) => { this.setState({ product_quantity: text.nativeEvent.text  })}}

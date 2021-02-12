@@ -13,6 +13,7 @@ import ItemDetail from './Component/ItemDetailsComponent'
 import NewProduct from './Component/NewItemComponent'
 import NewSalesComponent from './Component/NewSalesComponent'
 import ListSales from './Component/ListSales'
+import CartDetail from './Component/SingleSaleDetail'
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 const App: () => React$Node = () => {
@@ -26,6 +27,7 @@ const App: () => React$Node = () => {
               <Stack.Screen name="Item Details" component={ItemDetail} />
               <Stack.Screen name="New Sale" component={NewSalesComponent} />
               <Stack.Screen name="All Sales" component={ListSales} />
+              <Stack.Screen name="Single Sale Detail" component={CartDetail} />
               
       </Stack.Navigator>
   </NavigationContainer>

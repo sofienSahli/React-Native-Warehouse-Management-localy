@@ -150,7 +150,7 @@ export default class NewSalesComponent extends Component {
                     }
             });
         }else { 
-            Alert.alert("Aucun produit n'a été scanné ou aucun quantité n'a été saisie ")
+            Alert.alert("Aucun produit n'a été scanné ou aucun quantité n'a été saisie' ")
         }
       }
         render(){ 
