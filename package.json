@@ -5,9 +5,11 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build": "(cd android/ && ./gradlew assembleDebug)",
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "bundle-android": "react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --sourcemap-output android/app/src/main/assets/index.android.map --assets-dest android/app/src/main/res/"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.13.4",
@@ -20,14 +22,19 @@
     "react": "16.13.1",
     "react-native": "0.63.4",
     "react-native-camera": "^3.42.0",
+    "react-native-charts-wrapper": "^0.5.7",
     "react-native-expandable-view": "^0.1.6",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-paper": "^4.7.1",
     "react-native-reanimated": "^1.13.2",
     "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^2.17.1",
+    "react-native-svg": "^9.3.3",
+    "react-native-svg-charts": "^5.4.0",
+    "react-native-vector-icons": "^8.0.0",
     "react-native-woodpicker": "^0.2.8",
-    "tsutils": "^3.20.0"
+    "tsutils": "^3.20.0",
+    "victory-native": "^35.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

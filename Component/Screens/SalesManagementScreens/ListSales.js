@@ -4,7 +4,7 @@ import { Switch } from 'react-native-gesture-handler';
 
 import { Picker } from 'react-native-woodpicker'
 import { DatePicker } from 'react-native-woodpicker'
-import cartDAO from '../LocalStorage/CartDAO';
+import cartDAO from '../../../LocalStorage/CartDAO';
 
 
 const windowWidth = Dimensions.get('window').width;

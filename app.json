@@ -1,4 +1,5 @@
 {
   "name": "RealEstateManger",
-  "displayName": "RealEstateManger"
+  "displayName": "RealEstateManger",
+  "packagerOpts": { "config": "metro.config.js", "sourceExts": [ "js","jsx","svg","ts","tsx"] }
 }

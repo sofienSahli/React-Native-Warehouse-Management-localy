@@ -2,6 +2,7 @@ import React from 'react'
 import { Modal,View,Button,StyleSheet,Dimensions} from 'react-native'
 
 import { RNCamera } from 'react-native-camera';
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -39,7 +40,7 @@ export default class ScanCodeModal extends React.Component {
     render(){ 
         return (
             <View style={styles.centeredView}>
-              <Button title="Scan" onPress={this.setModalVisible} color='#27ae60'></Button>
+              <Icon.Button name="barcode" onPress={this.setModalVisible} backgroundColor='#27ae60'>Scan</Icon.Button>
               <Modal
                 animationType="slide"
                 transparent={true}

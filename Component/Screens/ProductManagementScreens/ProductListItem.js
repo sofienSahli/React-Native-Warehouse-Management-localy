@@ -6,9 +6,9 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import productDao from '../LocalStorage/ProductDAO'
+import productDao from '../../../LocalStorage/ProductDAO'
 
-
+import Icon from 'react-native-vector-icons/FontAwesome'
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 export const PRODUCT = "@PRODUCT"
@@ -24,10 +24,19 @@ export default  class ItemList extends React.Component {
             this.itemPressed = this.itemPressed.bind(this)
             this.addNewItem = this.addNewItem.bind(this)
             this.searchByQuery = this.searchByQuery.bind(this)
+            this.refresh = this.refresh.bind(this)
         }
   
-    
-  
+        refresh(){
+            productDao.getData().then((values)=>{
+                this.setState({
+                    data: values
+                })
+            })
+        }
+        componentDidMount(){
+            this.refresh()
+        }
     searchByQuery(text){ 
         productDao.findItemByName(text).then((values)=>{
             this.setState({
@@ -55,12 +64,8 @@ export default  class ItemList extends React.Component {
 
 
     render( ){ 
-        productDao.getData().then((values)=>{
-            this.setState({
-                data: values
-            })
-        })
-  
+    /*
+  */
         return(
         <SafeAreaView style={styles.container}>
             <FlatList
@@ -72,9 +77,12 @@ export default  class ItemList extends React.Component {
             ListHeaderComponent = { 
                 <>
                 <View style={styles.ListHeader}> 
-                    <TextInput placeholder="Search Item" onChangeText={ this.searchByQuery}></TextInput>
+                <TouchableOpacity onPress ={this.refresh }> 
+                     <Icon name="refresh" size={32} color="#27ae60" />
+                    </TouchableOpacity>
+                    <TextInput placeholder="Search Item" style={styles.input_text} onChangeText={ this.searchByQuery}></TextInput>
                     <TouchableOpacity onPress ={this.addNewItem }> 
-                        <Image  source={ require('../assets/plus.png')}></Image>
+                     <Icon name="plus-circle" size={32} color="#27ae60" />
                     </TouchableOpacity>
                 </View>
                 <View style= {{ width: windowWidth, height:1 , marginBottom: 8, marginBottom: 8, backgroundColor: '#000' }} /> 
@@ -152,6 +160,14 @@ const styles = StyleSheet.create ({
         width: windowWidth, 
         height : 8, 
         backgroundColor: '#000000'
-    }
+    },input_text : {
+        marginStart: 8, 
+        marginEnd: 8, 
+ 
+        flex: 1 , 
+        borderColor : "#27ae60", 
+        borderRadius: 8.0, 
+        borderBottomWidth : 1.0 
+    },
     
 });

@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import {View, Text, Button,Dimensions,StyleSheet,Alert} from 'react-native'
 import { RNCamera } from 'react-native-camera';
 import { FlatList, ScrollView, TextInput,TouchableOpacity, Switch } from 'react-native-gesture-handler';
-import ScanCodeModal from './Modal/ScanCodeModal'
-import productDao from '../LocalStorage/ProductDAO'
-import cartDAO from '../LocalStorage/CartDAO';
+import ScanCodeModal from '../../Modal/ScanCodeModal'
+import productDao from '../../../LocalStorage/ProductDAO'
+import cartDAO from '../../../LocalStorage/CartDAO';
 import ExpandableView from 'react-native-expandable-view';
 
 const windowWidth = Dimensions.get('window').width;
@@ -14,7 +14,6 @@ export default class NewSalesComponent extends Component {
         constructor(props){ 
             super (props)
             this.state = { 
-               
                     modal_visible: false,
                     is_paid : true , 
                     cart : {
@@ -34,9 +33,9 @@ export default class NewSalesComponent extends Component {
                     product_quantity: null, 
                     product_price: null,
                     total: null,
-                    libelle: null, 
-                
+                    libelle: null,        
             }
+
             this.callbackFunction = this.callbackFunction.bind(this)
             this.calculateTotal = this.calculateTotal.bind(this)
             this.add_product_to_cart = this.add_product_to_cart.bind(this)
@@ -109,7 +108,7 @@ export default class NewSalesComponent extends Component {
 
       presisit_data ( ){
         if(this.state.cart.product.length >= 1){
-    
+           
             cartDAO.storeData(this.state.cart).then( this.props.navigation.navigate('Home') )
         }else {
             Alert.alert("Impossible d'enregister une caisse vide ")
@@ -126,8 +125,8 @@ export default class NewSalesComponent extends Component {
                 product_total_price : this.state.total
                 })
                 var today = new Date();
-                var dd = String(today.getDate()).padStart(2, '0');
-                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                var dd = parseInt( String(today.getDate()).padStart(2, '0'));
+                var mm = today.getMonth() + 1; //January is 0!
                 var yyyy = today.getFullYear();
                 var f = parseFloat(this.state.cart.total_to_pay + this.state.total)
                 this.setState({
@@ -162,7 +161,7 @@ export default class NewSalesComponent extends Component {
                                     modal_visibile = { this.state.modal_visible}
                                     parentCallback = {this.callbackFunction}
                                     />
-                                </View>
+                            </View>
                  
                         <View style={{ flex:4}}>
                                 <FlatList
@@ -224,10 +223,9 @@ const styles = StyleSheet.create({
       flex: 1,
       flexDirection: 'column',
       flexShrink: 1, 
-       
-        width :windowWidth , 
+    width :windowWidth , 
         height: windowHeight,
-        padding:8,
+     
     },
     preview: {
       flex: 1,

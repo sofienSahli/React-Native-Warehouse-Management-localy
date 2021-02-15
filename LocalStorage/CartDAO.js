@@ -43,7 +43,10 @@ class CartDAO{
         console.log('Done.')
       }
 
-      
+    updateItem=async(value,dataBase)=>{ 
+
+    }
+    
       // Returns all values from @Product
     getData = async () => {
         try {

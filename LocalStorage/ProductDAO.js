@@ -57,11 +57,11 @@ export const PRODUCT = "@PRODUCT"
         try {
             const jsonValue = await AsyncStorage.getItem(PRODUCT)
             var object =  JSON.parse(jsonValue)
-
+            //console.warn(value)
              
            // return jsonValue != null ? JSON.parse(jsonValue) : null;
               if(object !== null){
-                    object.push(value)
+                object.push(value)
                 
                 }else {
                 object = []

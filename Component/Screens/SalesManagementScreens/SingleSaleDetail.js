@@ -1,6 +1,7 @@
 import React from 'react'
-import { View, FlatList , Text,Dimensions,StyleSheet } from 'react-native'
+import { View, FlatList , Text,Dimensions,StyleSheet,TextInput } from 'react-native'
 
+import { Switch } from 'react-native-gesture-handler';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -14,6 +15,7 @@ export default class CartDetail extends React.Component{
 
         }
         console.log(this.state.cart)
+        this.toggleSwitch = this.toggleSwitch.bind(this)
     }
 
     componentDidMount(){ }
@@ -30,6 +32,17 @@ export default class CartDetail extends React.Component{
                         <>
                         <View style= {styles.card_style}> 
                             <View style={ styles.card_line}>
+                                <TextInput placeholder="Libelle de vente" value={this.state.cart.cart_libelle}></TextInput>
+                                
+                            </View>
+                            <View style={styles.card_line}> 
+                                <Text>Prix total des achats :</Text>
+                                <Text style={{ color: '#27ae60'}}>{this.state.cart.total_to_pay} </Text>
+                            </View>
+                            <View style={styles.card_line}>
+                                <Text> Is paid</Text>
+                                <Switch trackColor={{ false: "#c0392b", true: "#27ae60" }} 
+                                           onValueChange={this.toggleSwitch}    value={this.state.cart.is_paid} enabled={true}></Switch>
                             </View>
                         </View>
                         </>
@@ -54,6 +67,16 @@ export default class CartDetail extends React.Component{
 
 
         )
+    }
+    toggleSwitch(){ 
+        //console.log(this.state.cart)
+        let cart_temp = this.props.route.params.item
+        cart_temp.is_paid = !cart_temp.is_paid
+        this.setState({
+            cart: cart_temp
+        })
+
+    
     }
 }
 
@@ -94,14 +117,9 @@ const styles = StyleSheet.create({
         alignContent:'space-between',
         justifyContent: 'space-between',
         flexDirection: 'column',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.5,
-        shadowRadius: 2,
-        elevation: 2,
-        borderRadius: 16, 
-        margin : 8,
-        padding: 8,
+        margin : 0,
+        width : windowWidth, 
+        padding: 16,
     },card_line : {
         flex: 1 , 
         alignContent:'center',

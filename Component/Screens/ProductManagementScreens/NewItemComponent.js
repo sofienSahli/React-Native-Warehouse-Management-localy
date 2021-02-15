@@ -2,8 +2,8 @@ import React from 'react'
 import { TextInput, Text, Button, View,StyleSheet, TouchableOpacity,Dimensions} from 'react-native'
 import { RNCamera } from 'react-native-camera';
 import { ScrollView } from 'react-native-gesture-handler';
-
-import productDao from  '../LocalStorage/ProductDAO';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import productDao from  '../../../LocalStorage/ProductDAO';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const PendingView = () => (
@@ -41,6 +41,7 @@ export default class NewProduct extends React.Component {
            
         }
         this.onBarCodeRead = this.onBarCodeRead.bind(this)
+        this.persist_data = this.persist_data.bind(this)
         //this.storeData = this.storeData.bind(this)
     }
 
@@ -92,16 +93,10 @@ export default class NewProduct extends React.Component {
         if (!this.state.isScanUp) 
                     
                 content = 
-                <View style={ styles.box }> 
-                    <Button title="Scan" onPress={()=> this.setState( { 
-                        isScanUp: !this.state.isScanUp
-                    }) } > </Button> 
-                    <View style={ styles.line }>
-                        <Text>Code à  barre </Text>
-                        <Text style={ styles.input_text}>{this.state.lastScanned}</Text>
-                    </View>
-                
-                    
+                <View style={ styles.line }> 
+                    <Icon.Button onPress={()=> this.setState( {isScanUp: !this.state.isScanUp}) } 
+                      name="barcode">Scan</Icon.Button> 
+                    <TextInput style={ styles.input_text} placeholder='Barcode'>{this.state.lastScanned}</TextInput>
                 </View>
                   
 
@@ -140,20 +135,24 @@ export default class NewProduct extends React.Component {
                                 />
                             </View>
                             <View style={ styles.line}>
-                                <Button title="Ajouter" color ="#27ae60" onPress={()=> productDao.storeData(
-                                        { 
-                                           product_name :  this.state.product_name,
-                                           product_price : this.state.product_price, 
-                                           product_quantity : this.state.product_quantity,
-                                           product_barcode : this.state.lastScanned
-                                        }
-                                ).then(()=> this.props.navigation.navigate('List Items'))}></Button>
+                                <Button title="Ajouter" color ="#27ae60" onPress={this.persist_data}></Button>
                                 <Button title="Annuler" color="#c0392b" onPress={()=> this.props.navigation.navigate('List Items')}></Button>
                             </View>
               
                         </View>
           </ScrollView>
         )
+    }
+    persist_data(){
+     
+     //   var key =;
+        var obj ={ 
+            product_name :  this.state.product_name,
+            product_price : this.state.product_price, 
+            product_quantity : this.state.product_quantity,
+            product_barcode : this.state.lastScanned
+        } 
+        productDao.storeData(obj).then(()=> this.props.navigation.navigate('List Items'))
     }
 }
 const styles = StyleSheet.create({
@@ -186,16 +185,16 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems : 'stretch',
     },input_text : {
-        marginStart: 8, 
-        marginEnd: 8, 
-        height : 20, 
-        flex: 1 , 
+        flex: 4 , 
         borderColor : "#27ae60", 
         borderRadius: 8.0, 
+        marginTop: 8,
+        marginStart: 8, 
+        marginEnd: 8, 
         borderBottomWidth : 1.0 
     }, box :{ 
         flexDirection : 'column',
-        flex: 1, 
+        flex: 4, 
         alignContent: "space-between",
         alignItems:"stretch"
     }

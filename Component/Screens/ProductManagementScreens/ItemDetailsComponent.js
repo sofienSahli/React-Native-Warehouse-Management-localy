@@ -1,7 +1,7 @@
 import React from 'react'
 import { View,Text, Button,StyleSheet } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
-import productDao from '../LocalStorage/ProductDAO'
+import productDao from  '../../../LocalStorage/ProductDAO';
 
 export default class ItemDetail extends React.Component { 
 
