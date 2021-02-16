@@ -7,7 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import productDao from '../../../LocalStorage/ProductDAO'
-
+import {NEW_ITEM_SCREEN, ITEM_DETAILS_SCREEN} from '../../../App'
 import Icon from 'react-native-vector-icons/FontAwesome'
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -46,7 +46,7 @@ export default  class ItemList extends React.Component {
     }
 
     addNewItem(){ 
-       this.props.navigation.navigate('New Item Entry')
+       this.props.navigation.navigate(NEW_ITEM_SCREEN)
     }
 
     itemPressed(item){
@@ -54,7 +54,7 @@ export default  class ItemList extends React.Component {
            selectedId : item.id
        })
      
-       this.props.navigation.navigate('Item Details', {item})
+       this.props.navigation.navigate(ITEM_DETAILS_SCREEN, {item})
     }
 
 
@@ -163,7 +163,7 @@ const styles = StyleSheet.create ({
     },input_text : {
         marginStart: 8, 
         marginEnd: 8, 
- 
+        height : 20, 
         flex: 1 , 
         borderColor : "#27ae60", 
         borderRadius: 8.0, 

@@ -6,7 +6,8 @@ import ScanCodeModal from '../../Modal/ScanCodeModal'
 import productDao from '../../../LocalStorage/ProductDAO'
 import cartDAO from '../../../LocalStorage/CartDAO';
 import ExpandableView from 'react-native-expandable-view';
-
+import { HOME_SCREEN} from '../../../App'
+import alertDAO from '../../../LocalStorage/AlertDAO';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 export default class NewSalesComponent extends Component { 
@@ -28,6 +29,7 @@ export default class NewSalesComponent extends Component {
                     
                         product: [] 
                     },
+                    products: [], 
                     last_scanned_barcode: null,
                     product_name: null,
                     product_quantity: null, 
@@ -109,7 +111,23 @@ export default class NewSalesComponent extends Component {
       presisit_data ( ){
         if(this.state.cart.product.length >= 1){
            
-            cartDAO.storeData(this.state.cart).then( this.props.navigation.navigate('Home') )
+            cartDAO.storeData(this.state.cart).then(()=>{ 
+
+                let products = this.state.cart.product
+                products.forEach((element,index,array) => { 
+                    productDao.findItemByBarCode(element.product_barcode).then((val)=>{
+                      //  console.warn(val)
+                        val.product_quantity -= element.product_quantity
+                        if(val.product_quantity <= val.product_low_quantity){
+                            alertDAO.storeData({ alert: val.product_name })
+                        }
+                        productDao.update_item(val)
+                    })
+                    if((products.length-1) == index  )
+                        this.props.navigation.navigate(HOME_SCREEN)
+                })    
+  
+            })
         }else {
             Alert.alert("Impossible d'enregister une caisse vide ")
         }

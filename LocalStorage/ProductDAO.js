@@ -5,6 +5,30 @@ export const PRODUCT = "@PRODUCT"
 
  class ProductDAO { 
     
+
+
+  update_item = async (item)=> {
+    var object = []
+    this.getData().then((value) =>{
+      object = value
+     
+      object.forEach((element,index,array) => {
+        if(element.product_barcode.toString() == item.product_barcode.toString()){
+          object.splice(index,1)
+          //console.warn(index)
+      }  
+    });
+    object.push(item)
+
+    this.removeValue().then(()=>{
+    this.storeArrayData(object)
+      
+    }) 
+    })
+
+  }
+
+
     //Remove a signle item from @Product
     remove_item = async(val) => { 
         this.getData().then((value)=>{
@@ -125,6 +149,7 @@ export const PRODUCT = "@PRODUCT"
              
                   search_result = element
           });
+          console.log(search_result)
           return search_result
       }catch(e){
           console.log(e)

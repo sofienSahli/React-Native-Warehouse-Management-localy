@@ -2,8 +2,9 @@ import React from 'react'
 import { Button, View,StyleSheet,Text,Dimensions} from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import cartDAO from '../../LocalStorage/CartDAO';
-import { VictoryBar,VictoryLabel, VictoryChart, VictoryTheme } from "victory-native";
+import { VictoryBar,VictoryLine,VictoryLabel, VictoryChart, VictoryTheme } from "victory-native";
 const windowWidth = Dimensions.get('window').width;
+import { LIST_ITEM_SCREEN,NEW_SALE_SCREEN,ALL_SALE_SCREEN } from "../../App";
 import Icon from 'react-native-vector-icons/FontAwesome'
 export default class HomeComponent extends React.Component { 
 
@@ -26,10 +27,11 @@ export default class HomeComponent extends React.Component {
         return(
         <ScrollView style={ styles.container}>
         <View style={ styles.card_style}>
+            <View style={{ width: '100%', flex:1 ,alignItems:'flex-end'}}> 
                 <TouchableOpacity  onPress={this.getThisMonthStat}>
                     <Icon name="refresh" size={32} color="#27ae60"  />
                 </TouchableOpacity>
-         
+                </View>
                         <VictoryChart   theme={VictoryTheme.material} width={ windowWidth } >
                     
                         <VictoryBar data={this.state.data} x="x" y="y" 
@@ -44,16 +46,16 @@ export default class HomeComponent extends React.Component {
                         </VictoryChart>
         </View>
         <View style={styles.icon_button}>
-                <Icon.Button  name="list"  backgroundColor='#e74c3c' color= '#ecf0f1' onPress={()=>{ this.props.navigation.navigate('List Items')}}>Stock Produit</Icon.Button> 
+                <Icon.Button  name="list"  backgroundColor='#27ae60' color= '#ecf0f1' onPress={()=>{ this.props.navigation.navigate(LIST_ITEM_SCREEN)}}>Stock Produit</Icon.Button> 
         </View>
         <View style={styles.icon_button}>
-                <Icon.Button  name='shopping-cart' backgroundColor= '#d35400'  onPress={()=> this.props.navigation.navigate('New Sale')}>Nouvelle Vente</Icon.Button>
+                <Icon.Button  name='shopping-cart' backgroundColor= '#d35400'  onPress={()=> this.props.navigation.navigate(NEW_SALE_SCREEN)}>Nouvelle Vente</Icon.Button>
          </View>
          <View style={styles.icon_button}>
-                <Icon.Button name='history' backgroundColor= '#8e44ad'  onPress={()=> this.props.navigation.navigate('All Sales')}>Historique des Ventes</Icon.Button>
+                <Icon.Button name='history' backgroundColor= '#8e44ad'  onPress={()=> this.props.navigation.navigate(ALL_SALE_SCREEN)}>Historique des Ventes</Icon.Button>
          </View>
          <View style={styles.icon_button}>
-                 <Icon.Button name='barcode' backgroundColor= '#27ae60' >Credit</Icon.Button>
+                 <Icon.Button name='exclamation-circle' backgroundColor= '#e74c3c' >Credit</Icon.Button>
          </View>
         
         </ScrollView>
@@ -70,8 +72,9 @@ export default class HomeComponent extends React.Component {
                 let total_today = 0 
                 let last_passed_by_day = values[0].day
  
-          
+                console.log(values)
                 values.forEach((element,index,array) => {
+                 
                     if(element.month ==  n ){
                         if(element.day === last_passed_by_day) {
                             total_today+= element.total_to_pay
@@ -82,6 +85,7 @@ export default class HomeComponent extends React.Component {
                             total_today = 0 
                             total_today += element.total_to_pay
                         }
+                        // Beug if the last index is the first one of the day it will provok a beug where the last item and the first one per day will be displayed with yesterday values 
                         if((values.length-1) == index  ){
                             this_month_sales.push({ x: last_passed_by_day, y : total_today})
                             total_today = 0 
@@ -93,7 +97,7 @@ export default class HomeComponent extends React.Component {
                 
                 });
 
-
+                console.log(this_month_sales)
                 this.setState({
                     data : this_month_sales
                 })

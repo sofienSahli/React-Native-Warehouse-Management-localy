@@ -47,7 +47,7 @@ class CartDAO{
 
     }
     
-      // Returns all values from @Product
+      // Returns all values 
     getData = async () => {
         try {
           const jsonValue = await AsyncStorage.getItem(CART)
@@ -60,7 +60,7 @@ class CartDAO{
         }
       }
 
-       // Returns all values from @Product
+       // Returns all values 
     getDataByPaymentStatus = async (value) => {
       try {
         const jsonValue = await AsyncStorage.getItem(CART)

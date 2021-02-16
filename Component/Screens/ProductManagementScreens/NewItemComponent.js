@@ -4,6 +4,7 @@ import { RNCamera } from 'react-native-camera';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import productDao from  '../../../LocalStorage/ProductDAO';
+import {LIST_ITEM_SCREEN} from '../../../App'
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const PendingView = () => (
@@ -37,6 +38,7 @@ export default class NewProduct extends React.Component {
                 product_quantity: null, 
                 product_price: null, 
                 barcodes: null  , 
+                product_low_quantity:null 
      
            
         }
@@ -134,9 +136,19 @@ export default class NewProduct extends React.Component {
                                 onSubmitEditing = { (text) => { this.setState({ product_quantity: text.nativeEvent.text  })}}
                                 />
                             </View>
+                            
+                            <View style={ styles.line}> 
+                                <Text > Alerte quantité faible : </Text>
+                                <TextInput style={ styles.input_text} multiline={ false} 
+                                keyboardType="numeric"
+                                    placeholder='Entrer la quantité à la quelle une alert vous sera donné'
+                                onChangeText={ (text)=>{ this.setState({ product_low_quantity: text }) }}
+                                onSubmitEditing = { (text) => { this.setState({ product_low_quantity: text.nativeEvent.text  })}}
+                                />
+                            </View>
                             <View style={ styles.line}>
                                 <Button title="Ajouter" color ="#27ae60" onPress={this.persist_data}></Button>
-                                <Button title="Annuler" color="#c0392b" onPress={()=> this.props.navigation.navigate('List Items')}></Button>
+                                <Button title="Annuler" color="#c0392b" onPress={()=> this.props.navigation.navigate(LIST_ITEM_SCREEN)}></Button>
                             </View>
               
                         </View>
@@ -150,9 +162,10 @@ export default class NewProduct extends React.Component {
             product_name :  this.state.product_name,
             product_price : this.state.product_price, 
             product_quantity : this.state.product_quantity,
-            product_barcode : this.state.lastScanned
+            product_barcode : this.state.lastScanned, 
+            product_low_quantity : this.state.product_low_quantity
         } 
-        productDao.storeData(obj).then(()=> this.props.navigation.navigate('List Items'))
+        productDao.storeData(obj).then(()=> this.props.navigation.navigate(LIST_ITEM_SCREEN))
     }
 }
 const styles = StyleSheet.create({
@@ -179,16 +192,16 @@ const styles = StyleSheet.create({
     },line: {
         padding: 8, 
         margin: 8,
-        marginEnd: 16 ,
+        marginEnd: 8 ,
         flex: 1 , 
         flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems : 'stretch',
     },input_text : {
-        flex: 4 , 
+        flex: 1 , 
         borderColor : "#27ae60", 
         borderRadius: 8.0, 
-        marginTop: 8,
+        paddingTop: 8 ,
         marginStart: 8, 
         marginEnd: 8, 
         borderBottomWidth : 1.0 
