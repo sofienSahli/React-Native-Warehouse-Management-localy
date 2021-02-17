@@ -1,5 +1,5 @@
 {
-  "name": "RealEstateManger",
-  "displayName": "RealEstateManger",
+  "name": "Dasboard des Ventes et stock",
+  "displayName": "Dasboard des Ventes et stock",
   "packagerOpts": { "config": "metro.config.js", "sourceExts": [ "js","jsx","svg","ts","tsx"] }
 }

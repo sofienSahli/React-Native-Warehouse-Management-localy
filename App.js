@@ -14,17 +14,17 @@ import NewProduct from './Component/Screens/ProductManagementScreens/NewItemComp
 import NewSalesComponent from './Component/Screens/SalesManagementScreens/NewSalesComponent'
 import ListSales from './Component/Screens/SalesManagementScreens/ListSales'
 import CartDetail from './Component/Screens/SalesManagementScreens/SingleSaleDetail'
-import alertDAO from './LocalStorage/AlertDAO'
+import productDao from './LocalStorage/ProductDAO'
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
-export const HOME_SCREEN = "home"
-export const NEW_ITEM_SCREEN = "NewItem"
-export const LIST_ITEM_SCREEN = "List Items"
+export const HOME_SCREEN = "Dashboard"
+export const NEW_ITEM_SCREEN = "Nouveau produit"
+export const LIST_ITEM_SCREEN = "Produit en stock"
 export const NEM_ITEM_ENTRY_SCREEN = "New Item Entry"
-export const ITEM_DETAILS_SCREEN = "Item Details"
-export const NEW_SALE_SCREEN = "New Sale"
-export const ALL_SALE_SCREEN = "All Sales"
+export const ITEM_DETAILS_SCREEN = "Detaille"
+export const NEW_SALE_SCREEN = "Caisse"
+export const ALL_SALE_SCREEN = "Ventes"
 export const SINGLE_SALE_SCREEN = "Single Sale Detail"
 
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -32,10 +32,12 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 const App: () => React$Node = () => {
  let header = null 
- alertDAO.getData().then((values)=>{
+ productDao.checkLowStock().then((values)=>{
    if(values !== null  ){
     header =  <Icon
-    onPress={() => console.log('ok')}
+    onPress={() => {
+      
+    }}
     name='exclamation-circle'
     size={32} color="#c0392b"
     style={{ marginEnd: 16}}

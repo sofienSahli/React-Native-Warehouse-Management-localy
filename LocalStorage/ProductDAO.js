@@ -155,6 +155,19 @@ export const PRODUCT = "@PRODUCT"
           console.log(e)
       }
       }
+      // Check weither or not there is a low stock product 
+      checkLowStock= async ()=>{
+        this.getData().then((product)=>{
+          let data = []
+          if(product !== null ){
+            product.forEach((element) =>{
+              if(element.product_quantity <= element.product_low_quantity)
+                data.push(element)
+            })
+          return data
+          }
+        })
+      }
 
 }
 const productDao = new ProductDAO(); 

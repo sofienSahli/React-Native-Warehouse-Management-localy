@@ -59,7 +59,46 @@ export default  class ItemList extends React.Component {
 
 
     renderItem({item}){
-        <Item title={item.title} price={item.price} quantity={item.quantity} style={styles.selectedBackground}></Item>
+  
+      if(item.product_quantity <= item.product_low_quantity)
+            return (
+                <View style ={ styles.singleItemList}>
+                    <TouchableOpacity onPress={ ()=>this.itemPressed(item) } >
+                        <View style={{ flex:1 , flexDirection: 'row',alignItems:'c'}}>
+                            
+                        
+                            <View style ={ styles.singleItemDetails}>
+                                <Text>Nom : {item.product_name}</Text>
+                                <Text>Prix : {item.product_price}</Text>
+                                <Text style={{ color:"#c0392b"}}>Stock : {item.product_quantity}</Text>
+
+                            </View>
+                            <Icon
+                                    onPress={() => console.log('ok')}
+                                    name='exclamation-circle'
+                                    size={32} color="#c0392b"
+                                    style={{ marginEnd: 16}}
+                                />
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            )
+        else 
+           return  (
+                <View style ={ styles.singleItemList}>
+                <TouchableOpacity onPress={ ()=>this.itemPressed(item) } >
+                    <Text>{item.product_name}</Text>
+                    <View style ={ styles.singleItemDetails}>
+                        <Text>Prix : {item.product_price}</Text>
+                        <Text>Stock : {item.product_quantity}</Text>
+                    </View>
+        
+                </TouchableOpacity>
+            </View>
+            )
+      
+      
+      
     }
 
 
@@ -90,18 +129,7 @@ export default  class ItemList extends React.Component {
             }
      
             data= {this.state.data}
-            renderItem= {({item}) => (
-                <View style ={ styles.singleItemList}>
-                    <TouchableOpacity onPress={ ()=>this.itemPressed(item) } >
-                        <Text>{item.product_name}</Text>
-                        <View style ={ styles.singleItemDetails}>
-                            <Text>Prix : {item.product_price}</Text>
-                            <Text>Stock : {item.product_quantity}</Text>
-                        </View>
-              
-                    </TouchableOpacity>
-                </View>
-            )}
+            renderItem= {({item}) => this.renderItem({item}) }
             keyExtractor= { item => item.product_barcode ? item.product_barcode.toString(): null}
             >
           
@@ -138,6 +166,18 @@ const styles = StyleSheet.create ({
         elevation: 2,
         flex: 1 , 
         borderColor: '#000', 
+
+    },singleItemList_highlited :{
+        padding: 16, 
+        margin: 8 ,
+        shadowColor: '#c0392b',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
+        elevation: 2,
+        flex: 1 , 
+        borderColor: '#c0392b', 
+        borderWidth: 1,
 
     },singleItemDetails :{
         paddingLeft: 8, 

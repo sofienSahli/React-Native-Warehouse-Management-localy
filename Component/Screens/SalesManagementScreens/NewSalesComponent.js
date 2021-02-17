@@ -7,7 +7,6 @@ import productDao from '../../../LocalStorage/ProductDAO'
 import cartDAO from '../../../LocalStorage/CartDAO';
 import ExpandableView from 'react-native-expandable-view';
 import { HOME_SCREEN} from '../../../App'
-import alertDAO from '../../../LocalStorage/AlertDAO';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 export default class NewSalesComponent extends Component { 
@@ -118,9 +117,7 @@ export default class NewSalesComponent extends Component {
                     productDao.findItemByBarCode(element.product_barcode).then((val)=>{
                       //  console.warn(val)
                         val.product_quantity -= element.product_quantity
-                        if(val.product_quantity <= val.product_low_quantity){
-                            alertDAO.storeData({ alert: val.product_name })
-                        }
+                       
                         productDao.update_item(val)
                     })
                     if((products.length-1) == index  )
