@@ -14,10 +14,8 @@ import NewProduct from './Component/Screens/ProductManagementScreens/NewItemComp
 import NewSalesComponent from './Component/Screens/SalesManagementScreens/NewSalesComponent'
 import ListSales from './Component/Screens/SalesManagementScreens/ListSales'
 import CartDetail from './Component/Screens/SalesManagementScreens/SingleSaleDetail'
+import StatsMainScreen from './Component/Screens/Stats/StatsMainScreen'
 import productDao from './LocalStorage/ProductDAO'
-const Stack = createStackNavigator();
-const Tab = createMaterialBottomTabNavigator();
-
 export const HOME_SCREEN = "Dashboard"
 export const NEW_ITEM_SCREEN = "Nouveau produit"
 export const LIST_ITEM_SCREEN = "Produit en stock"
@@ -26,37 +24,23 @@ export const ITEM_DETAILS_SCREEN = "Detaille"
 export const NEW_SALE_SCREEN = "Caisse"
 export const ALL_SALE_SCREEN = "Ventes"
 export const SINGLE_SALE_SCREEN = "Single Sale Detail"
+export const SPLASH_SCREEN = "Splash Screen"
+export const STAT_SCREEN = "Stats"
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 
-const App: () => React$Node = () => {
- let header = null 
- productDao.checkLowStock().then((values)=>{
-   if(values !== null  ){
-    header =  <Icon
-    onPress={() => {
-      
-    }}
-    name='exclamation-circle'
-    size={32} color="#c0392b"
-    style={{ marginEnd: 16}}
-   />
-   }
- })
- /*
-*/
 
-  return (
-    <NavigationContainer> 
-      <Stack.Navigator>
-              <Stack.Screen name= {HOME_SCREEN} component={HomeComponent}  options={{
-              
-          headerRight: () => (
-           header
-         
-          )
-        }} />
+const Stack = createStackNavigator();
+//const Tab = createMaterialBottomTabNavigator();
+function home (){ 
+
+  return(<Stack.Navigator>
+
+<Stack.Screen name= {HOME_SCREEN} component={HomeComponent} options={  {
+    title: HOME_SCREEN,
+    headerLeft: null
+}}  />
    
               <Stack.Screen name={LIST_ITEM_SCREEN} component={ItemList} />
               <Stack.Screen name={NEW_ITEM_SCREEN} component={NewProduct} />
@@ -64,6 +48,24 @@ const App: () => React$Node = () => {
               <Stack.Screen name={NEW_SALE_SCREEN} component={NewSalesComponent} />
               <Stack.Screen name={ALL_SALE_SCREEN} component={ListSales} />
               <Stack.Screen name={SINGLE_SALE_SCREEN} component={CartDetail} />
+              <Stack.Screen name={STAT_SCREEN} component={StatsMainScreen} />
+
+  </Stack.Navigator>)
+}
+
+
+const App: () => React$Node = () => {
+
+ /*
+*/
+
+  return (
+    <NavigationContainer> 
+      <Stack.Navigator   screenOptions={{
+    headerShown: false
+  }}>
+              <Stack.Screen name ={SPLASH_SCREEN} component={SplashScreenComponent} />
+              <Stack.Screen name ={HOME_SCREEN} component={home} />
               
       </Stack.Navigator>
   </NavigationContainer>

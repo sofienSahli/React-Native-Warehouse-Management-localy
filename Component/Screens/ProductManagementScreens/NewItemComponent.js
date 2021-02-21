@@ -47,7 +47,7 @@ export default class NewProduct extends React.Component {
         //this.storeData = this.storeData.bind(this)
     }
 
-   
+ 
     
     onBarCodeRead(scanResult) {
         if(scanResult[0].type !== "UNKNOWN_FORMAT"){

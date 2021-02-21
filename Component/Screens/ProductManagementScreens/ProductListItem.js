@@ -1,5 +1,5 @@
 import React from 'react'; 
-import { FlatList, StyleSheet, View, SafeAreaView,Dimensions,StatusBar,TouchableOpacity ,Text, Image, ImageBackground } from 'react-native'
+import { FlatList, StyleSheet, View, SafeAreaView,Dimensions,StatusBar,TouchableOpacity,Animated ,Text, Image,Easing , ImageBackground } from 'react-native'
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { color } from 'react-native-reanimated';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -16,25 +16,34 @@ export default  class ItemList extends React.Component {
     
     constructor(props){ 
             super(props)
-        
+           
             this.state= {
+          
                 selectedId : null, 
                 data : []
             }
+            this.animatedValue = new Animated.Value(0)
             this.itemPressed = this.itemPressed.bind(this)
             this.addNewItem = this.addNewItem.bind(this)
             this.searchByQuery = this.searchByQuery.bind(this)
             this.refresh = this.refresh.bind(this)
+            this.render_list_headedr_view = this.render_list_headedr_view.bind(this)
+            this.render_flat_list = this.render_flat_list.bind(this)
+   
         }
   
+    
+       
         refresh(){
             productDao.getData().then((values)=>{
                 this.setState({
                     data: values
                 })
             })
+        
         }
         componentDidMount(){
+           // this.handleAnimation()
             this.refresh()
         }
     searchByQuery(text){ 
@@ -84,6 +93,7 @@ export default  class ItemList extends React.Component {
                 </View>
             )
         else 
+
            return  (
                 <View style ={ styles.singleItemList}>
                 <TouchableOpacity onPress={ ()=>this.itemPressed(item) } >
@@ -100,32 +110,34 @@ export default  class ItemList extends React.Component {
       
       
     }
+    render_no_item_view(){ 
 
+    }
 
-    render( ){ 
-    /*
-  */
-        return(
-        <SafeAreaView style={styles.container}>
-            <FlatList
+    render_list_headedr_view (){ 
+        return (   <>
+            <View style={styles.ListHeader}> 
+            <TouchableOpacity onPress ={this.refresh }> 
+                 <Icon name="refresh" size={32} color="#27ae60" />
+                 
+                </TouchableOpacity>
+                <TextInput placeholder="Search Item" style={styles.input_text} onChangeText={ this.searchByQuery}></TextInput>
+                <TouchableOpacity onPress ={this.addNewItem }> 
+                 <Icon name="plus-circle" size={32} color="#27ae60" />
+                </TouchableOpacity>
+            </View>
+            <View style= {{ width: windowWidth, height:1 , marginBottom: 8, marginBottom: 8, backgroundColor: '#000' }} /> 
+            </>)
+    }
+    render_flat_list ( ){
+        return ( <FlatList
             style = {{
                 paddingBottom: 32, 
                 marginBottom: 46,
                 flex: 1 ,
             }}
             ListHeaderComponent = { 
-                <>
-                <View style={styles.ListHeader}> 
-                <TouchableOpacity onPress ={this.refresh }> 
-                     <Icon name="refresh" size={32} color="#27ae60" />
-                    </TouchableOpacity>
-                    <TextInput placeholder="Search Item" style={styles.input_text} onChangeText={ this.searchByQuery}></TextInput>
-                    <TouchableOpacity onPress ={this.addNewItem }> 
-                     <Icon name="plus-circle" size={32} color="#27ae60" />
-                    </TouchableOpacity>
-                </View>
-                <View style= {{ width: windowWidth, height:1 , marginBottom: 8, marginBottom: 8, backgroundColor: '#000' }} /> 
-                </>
+             this.render_list_headedr_view
             }
      
             data= {this.state.data}
@@ -136,19 +148,92 @@ export default  class ItemList extends React.Component {
                  
              
             </FlatList>
-       
+       )
+    }
+    render( ){ 
+        let content = null 
+        if(this.state.data!=null && this.state.data.length > 0) {
+            content =  this.render_flat_list()
+        }else 
+            content =( <>
+            <ImageBackground source={ require('../../../assets/empty.png')} style ={ styles.image_background }/>
+
+                  <TouchableOpacity  style={styles.new_item_style} onPress={this.addNewItem}> 
+                        <Icon name="cart-plus" color='#27ae60' backgroundColor='#27ae60' size={48} />
+                        <Text > Commencez à enregistrer vos produits. </Text>
+
+                    </TouchableOpacity>
+            </>)
+    
+    
+        return(
+        <SafeAreaView style={styles.container}>
+            
+            {content}
         </SafeAreaView>
       
         )
     }
 }
+/*
+translate anim
+ {
+
+
+            <Animated.View  style={{
+                        position: 'absolute',
+                        flex: 1, 
+                        flexWrap: 'wrap',
+                        flexDirection : 'row',
+
+                        transform: [
+                           
+                            {
+                                scaleX: this.animatedValue.interpolate({
+                                    inputRange: [0, 1],
+                                    outputRange: [1, 1.1]
+                                })
+                            },
+                            {
+                                scaleY: this.animatedValue.interpolate({
+                                    inputRange: [0, 1],
+                                    outputRange: [1, 1.1]
+                                })
+                            }
+                        ]
+                    }}>            </Animated.View>   
+
+                                translateX: this.animatedValue.interpolate({
+                                    inputRange: [0, 1],
+                                    outputRange: [0, 120]
+                                })
+                            },
+                            {
+                                translateY: this.animatedValue.interpolate({
+                                    inputRange: [0, 1],
+                                    outputRange: [0, 25]
+                                })
+                            }
+                                handleAnimation  ()  {
+            Animated.loop(Animated.sequence([Animated.delay(500),Animated.timing(this.animatedValue, {
+                toValue: 1,
+                duration: 500,
+                
+                useNativeDriver: false , 
+                easing: Easing.ease
+            })]) ,  {
+                iterations: -1
+              }).start(()=> {})
+        }
+
+*/
 
 const styles = StyleSheet.create ({ 
     container : {
         flex: 1,
         paddingBottom: 32,
         alignContent: 'center',
-        flexDirection: 'row',
+        flexDirection: 'column',
         marginTop: StatusBar.currentHeight || 0,
         paddingEnd: 0,
         paddingLeft: 0, 
@@ -208,6 +293,19 @@ const styles = StyleSheet.create ({
         borderColor : "#27ae60", 
         borderRadius: 8.0, 
         borderBottomWidth : 1.0 
-    },
+    },image_background:{
+        resizeMode: "center",
+        height: 200,
+        flex:1,
+      },new_item_style: { 
+          flex: 1 ,
+        position:'relative', 
+        flexDirection : 'column', 
+        justifyContent:'center',
+        alignItems:'center', 
+        alignContent:'space-around',
+     
+     
+    }
     
 });

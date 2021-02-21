@@ -4,7 +4,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import cartDAO from '../../LocalStorage/CartDAO';
 import { VictoryBar,VictoryLine,VictoryLabel, VictoryChart, VictoryTheme } from "victory-native";
 const windowWidth = Dimensions.get('window').width;
-import { LIST_ITEM_SCREEN,NEW_SALE_SCREEN,ALL_SALE_SCREEN } from "../../App";
+import { LIST_ITEM_SCREEN,NEW_SALE_SCREEN,ALL_SALE_SCREEN,STAT_SCREEN } from "../../App";
 import Icon from 'react-native-vector-icons/FontAwesome'
 export default class HomeComponent extends React.Component { 
 
@@ -13,105 +13,63 @@ export default class HomeComponent extends React.Component {
         this.state ={
             data: null
         }
-    this.getThisMonthStat = this.getThisMonthStat.bind(this)
+    //this.props.navigation.reset({index: 0 , routes:[{"Dashboard"}] } )
     }
    
     componentDidMount(){ 
     
-    this.getThisMonthStat()
-     
+    
     }
 
     render(){
 
         return(
-        <ScrollView style={ styles.container}>
-        <View style={ styles.card_style}>
-            <View style={{ width: '100%', flex:1 ,alignItems:'flex-end'}}> 
-                <TouchableOpacity  onPress={this.getThisMonthStat}>
-                    <Icon name="refresh" size={32} color="#27ae60"  />
-                </TouchableOpacity>
-                </View>
-                        <VictoryChart   theme={VictoryTheme.material} width={ windowWidth } >
-                    
-                        <VictoryBar data={this.state.data} x="x" y="y" 
-                                labels={({ datum }) => (datum.y).toFixed(3)}
-                        />
-                         <VictoryLabel
-                                textAnchor="start" verticalAnchor="start"
-                                x={10} y={10}
-                                style={{fontSize: 16}}
-                                text="Vente du mois en cours"
-                            />
-                        </VictoryChart>
-        </View>
+        <View style={ styles.container}>
         <View style={styles.icon_button}>
-                <Icon.Button  name="list"  backgroundColor='#27ae60' color= '#ecf0f1' onPress={()=>{ this.props.navigation.navigate(LIST_ITEM_SCREEN)}}>Stock Produit</Icon.Button> 
-        </View>
-        <View style={styles.icon_button}>
-                <Icon.Button  name='shopping-cart' backgroundColor= '#d35400'  onPress={()=> this.props.navigation.navigate(NEW_SALE_SCREEN)}>Nouvelle Vente</Icon.Button>
-         </View>
-         <View style={styles.icon_button}>
-                <Icon.Button name='history' backgroundColor= '#8e44ad'  onPress={()=> this.props.navigation.navigate(ALL_SALE_SCREEN)}>Historique des Ventes</Icon.Button>
-         </View>
-         <View style={styles.icon_button}>
-                 <Icon.Button name='exclamation-circle' backgroundColor= '#e74c3c' >Credit</Icon.Button>
+            <TouchableOpacity style={ styles.TouchableOpacity_1}  onPress={()=>{ this.props.navigation.navigate(LIST_ITEM_SCREEN)}}>
+                    <Icon  name="database" size={48} color= '#ecf0f1'/>
+                    <Text style={{ color: "#ecf0f1"}}> Produit en stock</Text> 
+            </TouchableOpacity>
+        
+            <TouchableOpacity style={styles.TouchableOpacity_2} onPress={()=> this.props.navigation.navigate(NEW_SALE_SCREEN)}>
+                    <Icon  name='shopping-cart' size={48} color= '#ecf0f1' ></Icon>
+                    <Text style={{ color: "#ecf0f1"}}> Nouvelle Vente</Text>
+            </TouchableOpacity>
          </View>
         
-        </ScrollView>
+        
+         <View style={styles.icon_button}>
+            <TouchableOpacity style={styles.TouchableOpacity_3} onPress={()=> this.props.navigation.navigate(ALL_SALE_SCREEN)}>
+                    <Icon name='history' color= '#ecf0f1' size={48}  ></Icon>
+                    <Text style={{ color: "#ecf0f1"}}> Historique des ventes</Text>
+
+            </TouchableOpacity>
+        
+            <TouchableOpacity style={styles.TouchableOpacity_4 } onPress={()=> this.props.navigation.navigate(STAT_SCREEN)}>
+                    <Icon name='area-chart' size={48} color= '#ecf0f1' ></Icon>
+                    <Text style={{ color: "#ecf0f1"}} > Rendement</Text>
+
+            </TouchableOpacity>
+         </View>
+        </View>
         )
     }
-    getThisMonthStat(){ 
-        console.log('here')
-        var date = new Date();
-        var n = date.getMonth()+1;
-        cartDAO.getData().then((values)=>{
-         // values.push({month : 2 , day : 3, total_to_pay : 12 },{month : 2 , day : 3, total_to_pay : 12 },{month : 2 , day : 4, total_to_pay : 232 },{month : 2 , day : 6, total_to_pay : 232 },{month : 2 , day : 6, total_to_pay : 232 })
-            if(values !== null ){
-                var this_month_sales = []
-                let total_today = 0 
-                let last_passed_by_day = values[0].day
- 
-                console.log(values)
-                values.forEach((element,index,array) => {
-                 
-                    if(element.month ==  n ){
-                        if(element.day === last_passed_by_day) {
-                            total_today+= element.total_to_pay
-                      
-                        }
-                        else if (element.day != last_passed_by_day ){
-                            this_month_sales.push({ x: last_passed_by_day, y : total_today})
-                            total_today = 0 
-                            total_today += element.total_to_pay
-                        }
-                        // Beug if the last index is the first one of the day it will provok a beug where the last item and the first one per day will be displayed with yesterday values 
-                        if((values.length-1) == index  ){
-                            this_month_sales.push({ x: last_passed_by_day, y : total_today})
-                            total_today = 0 
-                            total_today += element.total_to_pay
-                        }
-                        last_passed_by_day = element.day 
-                       
-                    }
-                
-                });
-
-                console.log(this_month_sales)
-                this.setState({
-                    data : this_month_sales
-                })
-           
-            } 
-        })}
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1 , 
+        flex: 4 , 
         flexDirection : 'column',
         paddingBottom: 16,
-        paddingTop: 8 
+        alignContent:'center',
+        alignItems:'center',
+        justifyContent: 'space-around',
+        paddingTop: 8, 
+        paddingEnd : 8, 
+        paddingStart: 8 , 
+        margin: 8,
+        width: windowWidth,
+        marginLeft: 8
     },
     card_style : { 
         flex: 1,
@@ -131,8 +89,102 @@ const styles = StyleSheet.create({
         paddingRight: 16,
         margin: 8,
     },icon_button:{
-        marginTop: 8,
+        margin: 16,
         padding: 8,
+        flex: 1, 
+        flexDirection: 'row', 
+        justifyContent:'space-between',
+        alignContent:'center',
+        flexShrink: 1.0
+      
+      
+    }, TouchableOpacity_1: { 
+        margin: 8, 
+        flex:1 , 
+        flexDirection: 'column',
+        padding: 8,
+        alignContent:'center', 
+        alignItems : 'center',
+        justifyContent: 'center',
+
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity:1,
+        shadowRadius: 2,
+        elevation: 8,
+        borderRadius: 8,
+        backgroundColor: '#27ae60'
+    }, TouchableOpacity_2: { 
+        margin: 8, 
+        flex:1 , 
+        flexDirection: 'column',
+        padding: 8,
+        alignContent:'center', 
+        alignItems : 'center',
+        justifyContent: 'center',
+        flexShrink:1,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity:1,
+        shadowRadius: 2,
+        elevation: 8,
+        borderRadius: 8,
+        backgroundColor: '#16a085'
+    }, TouchableOpacity_3: { 
+        margin: 8, 
+        flex:1 , 
+        flexDirection: 'column',
+        padding: 8,
+        alignContent:'center', 
+        alignItems : 'center',
+        justifyContent: 'center',
+        flexShrink:1,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity:1,
+        shadowRadius: 2,
+        elevation: 8,
+        borderRadius: 8,
+        backgroundColor: '#d35400'
+    }, TouchableOpacity_4: { 
+        margin: 8, 
+        flex:1 , 
+        flexDirection: 'column',
+        padding: 8,
+        alignContent:'center', 
+        alignItems : 'center',
+        justifyContent: 'center',
+        flexShrink:1,
+        shadowColor: '#000',
+        shadowOffset: { width: 5, height: 5 },
+        shadowOpacity:1,
+        shadowRadius: 2,
+        elevation: 8,
+        borderRadius: 8,
+        backgroundColor: '#2980b9'
     }
 
 });
+
+/*
+
+ <View style={ styles.card_style}>
+            <View style={{ width: '100%', flex:1 ,alignItems:'flex-end'}}> 
+                <TouchableOpacity  onPress={this.getThisMonthStat}>
+                    <Icon name="refresh" size={32} color="#27ae60"  />
+                </TouchableOpacity>
+                </View>
+                        <VictoryChart   theme={VictoryTheme.material} width={ windowWidth } >
+                    
+                        <VictoryBar data={this.state.data} x="x" y="y" 
+                                labels={({ datum }) => (datum.y).toFixed(3)}
+                        />
+                         <VictoryLabel
+                                textAnchor="start" verticalAnchor="start"
+                                x={10} y={10}
+                                style={{fontSize: 16}}
+                                text="Vente du mois en cours"
+                            />
+                        </VictoryChart>
+        </View>
+        */

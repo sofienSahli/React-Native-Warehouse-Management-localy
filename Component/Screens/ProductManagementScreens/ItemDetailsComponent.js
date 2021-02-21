@@ -20,7 +20,7 @@ export default class ItemDetail extends React.Component {
     }
 
     delete_item ( ){
-        productDao.remove_item(this.props.route.params.item).then((val)=>  this.props.navigation.navigate('List Items'))
+        productDao.remove_item(this.props.route.params.item).then((val)=>  this.props.navigation.navigate(LIST_ITEM_SCREEN))
     }
     update_item(){ 
         productDao.update_item(this.state.product).then(this.props.navigation.navigate(LIST_ITEM_SCREEN))

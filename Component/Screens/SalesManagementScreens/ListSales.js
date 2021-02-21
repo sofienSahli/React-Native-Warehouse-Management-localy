@@ -99,7 +99,7 @@ export default class ListSales extends Component {
                         
                                 <View style ={ styles.singleItemDetails}>
                                     <Text>Libelle : <Text style={{color: '#d35400'}}>{item.libelle}</Text></Text>
-                                    <View style={{flex: 1 , flexDirection:'row', alignItems:'stretch',alignContent:'stretch',alignSelf:'stretch'}}><Text>Payment reçut</Text><Switch trackColor={{ false: "#c0392b", true: "#27ae60" }} 
+                                    <View style={{flex: 1 , flexDirection:'row', alignItems:'stretch',alignContent:'stretch',alignSelf:'stretch'}}><Text>Payment reçu</Text><Switch trackColor={{ false: "#c0392b", true: "#27ae60" }} 
                                                value={item.is_paid} enabled={false}></Switch></View>
                                     <Text>Valeur total des achats : <Text style={{color: '#27ae60'}}>{(item.total_to_pay).toFixed(3)}</Text></Text>
                                     <Text>Date :<Text style={{color: '#2c3e50'}}>{item.day}-{item.month}-{item.year}</Text></Text>
