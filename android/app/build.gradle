@@ -132,8 +132,8 @@ android {
         applicationId "com.realestatemanger"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 33
-        versionName "33"
+        versionCode 34
+        versionName "34"
         missingDimensionStrategy 'react-native-camera', 'general' // <--- insert this line
         multiDexEnabled true
     }

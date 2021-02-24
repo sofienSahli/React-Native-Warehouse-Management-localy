@@ -68,9 +68,9 @@ export const PRODUCT = "@PRODUCT"
         try {
           const jsonValue = await AsyncStorage.getItem(PRODUCT)
            let object =  JSON.parse(jsonValue)
-         // return jsonValue != null ? JSON.parse(jsonValue) : null;
+            return jsonValue != null ? JSON.parse(jsonValue) : null;
     
-            return object
+            //return object
         } catch(e) {
           // error reading value
         }

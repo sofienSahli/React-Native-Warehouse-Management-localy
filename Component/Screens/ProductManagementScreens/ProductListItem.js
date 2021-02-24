@@ -1,17 +1,15 @@
 import React from 'react'; 
 import { FlatList, StyleSheet, View, SafeAreaView,Dimensions,StatusBar,TouchableOpacity,Animated ,Text, Image,Easing , ImageBackground } from 'react-native'
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
-import { color } from 'react-native-reanimated';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {  TextInput } from 'react-native-gesture-handler';
+
 import productDao from '../../../LocalStorage/ProductDAO'
-import {NEW_ITEM_SCREEN, ITEM_DETAILS_SCREEN} from '../../../App'
+
 import Icon from 'react-native-vector-icons/FontAwesome'
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 export const PRODUCT = "@PRODUCT"
+const NEW_ITEM_SCREEN = "Nouveau produit"
+const ITEM_DETAILS_SCREEN = "Detaille"
 export default  class ItemList extends React.Component { 
     
     constructor(props){ 
@@ -36,10 +34,11 @@ export default  class ItemList extends React.Component {
        
         refresh(){
             productDao.getData().then((values)=>{
+                if(values != null )
                 this.setState({
                     data: values
                 })
-            })
+            }).catch(err => { throw err})
         
         }
         componentDidMount(){
@@ -73,7 +72,7 @@ export default  class ItemList extends React.Component {
             return (
                 <View style ={ styles.singleItemList}>
                     <TouchableOpacity onPress={ ()=>this.itemPressed(item) } >
-                        <View style={{ flex:1 , flexDirection: 'row',alignItems:'c'}}>
+                        <View style={{ flex:1 , flexDirection: 'row',alignItems:'center'}}>
                             
                         
                             <View style ={ styles.singleItemDetails}>
@@ -255,7 +254,7 @@ const styles = StyleSheet.create ({
     },singleItemList_highlited :{
         padding: 16, 
         margin: 8 ,
-        shadowColor: '#c0392b',
+ 
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.5,
         shadowRadius: 2,

@@ -60,12 +60,7 @@ export default class ScanCodeModal extends React.Component {
                                     buttonPositive: 'Ok',
                                     buttonNegative: 'Cancel',
                                     }}
-                                    androidRecordAudioPermissionOptions={{
-                                    title: 'Permission to use audio recording',
-                                    message: 'We need your permission to use your audio',
-                                    buttonPositive: 'Ok',
-                                    buttonNegative: 'Cancel',
-                                    }}
+                        
                                     onGoogleVisionBarcodesDetected={ (barcodeRead) =>  this.onBarCodeRead(barcodeRead)}
                                 >
                         </RNCamera>
